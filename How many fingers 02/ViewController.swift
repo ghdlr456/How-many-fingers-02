@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController , UITextFieldDelegate {
 
     @IBOutlet weak var input: UITextField!
     @IBOutlet weak var resultLabel: UILabel!
@@ -16,13 +16,16 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //delegate 연결
         
+        input.delegate = self
+        input.clearButtonMode = UITextFieldViewMode.always
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+        input.backgroundColor = UIColor.green
     }
-
     @IBAction func guess(_ sender: Any) {
         // 랜덤 숫자 생성
         let number = arc4random() % 6
@@ -34,10 +37,12 @@ class ViewController: UIViewController {
         } else {
             resultLabel.text = "실패!!! Try again!!! 숨겨진 숫자는 현재 \(number)"
         }
-        
-      
-        
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        input.resignFirstResponder()
+        view.backgroundColor = UIColor.yellow
+        return true
+    }
 }
 
